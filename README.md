@@ -24,7 +24,7 @@ The `limit` command will narrow down the group under the hosts inventroy file. e
 3. If `SSL` is required, adjust the parameters accordingly and change `passboltDeploy` to `passboltDeploySSL` instead. This assumes there is a valid dns record pointing to the IP hosting the server
 
 ### In the cloud
-1. Directly run ansible-playbook -i inventory/hosts playbook.yaml --limit `cloud_group_name`
+1. Directly run `ansible-playbook -i inventory/hosts playbook.yaml --limit <cloud_group_name>`
 
 ## Decions Made
 After carefully reading the passbolt documentation, the least time consuming approach ( that has production grade validity ) is installing via docker. This required the following steps 
