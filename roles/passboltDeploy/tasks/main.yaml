@@ -1,0 +1,28 @@
+---
+- name: Ensure docker-compose is installed
+  ansible.builtin.package:
+    name: docker-compose
+    state: present
+
+- name: Ensure Docker service is running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Setup passbolt directory
+  ansible.builtin.file:
+    path: /home/{{ user_name }}/docker-compose/passbolt
+    state: directory
+
+
+- name: Deploy passbolt using Docker Compose
+  ansible.builtin.template:
+    src: "templates/docker-compose.yaml"
+    dest: "/home/{{ user_name }}/docker-compose/passbolt/docker-compose.yaml"
+  notify:
+    - Start passbolt
+
+- name: Run passbolt docker compose up
+  ansible.builtin.command:
+    cmd: docker compose -f /home/{{ user_name }}/docker-compose/passbolt/docker-compose.yaml up -d

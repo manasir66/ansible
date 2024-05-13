@@ -1,0 +1,9 @@
+---
+- name: Update OS 
+  hosts: all
+  become: true
+  roles:
+    - updateOS
+    - installDocker
+    - passboltDeploy
+    - passboltBackup

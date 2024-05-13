@@ -1,0 +1,34 @@
+---
+- name: Setup Passbolt backup cron job on Ubuntu 20.04
+  hosts: passbolt_servers
+  become: yes
+  tasks:
+    - name: Ensure cron is installed
+      apt:
+        name: cron
+        state: present
+
+    - name: Ensure zip is installed
+      apt:
+        name: zip
+        state: present
+
+    - name: Ensure awscli is installed
+      pip:
+        name: awscli
+        state: present
+
+    - name: Create backup script
+      template:
+        src: backup_script.sh.j2
+        dest: /usr/local/bin/backup_passbolt.sh
+      mode: '0755'
+
+    - name: Add cron job to backup Passbolt
+      cron:
+        name: "Backup Passbolt"
+        minute: "0"  # Run at midnight
+        hour: "0"
+        job: "/usr/local/bin/backup_passbolt.sh"
+        user: root
+        state: present
